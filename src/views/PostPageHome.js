@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Container, Image, Row, Nav, Navbar } from "react-bootstrap";
+import { Container, Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { getDocs, collection } from "firebase/firestore";
 import { dB } from "../firebase";

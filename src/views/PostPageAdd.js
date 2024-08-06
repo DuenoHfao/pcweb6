@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Form, Image, Row } from "react-bootstrap";
 import { NewPostNavBar } from "../template/DefaultNavBar";
 import { addDoc, collection } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -13,6 +13,8 @@ export default function PostPageAdd() {
     const [caption, setCaption] = useState("");
     const [image, setImage] = useState("");
     const navigate = useNavigate();
+    const [previewImage, setPreviewImage] = useState("https://fastly.picsum.photos/id/69/420/420.jpg?hmac=mpGXwWum8-NPH-WF0d7SrqpJdQmiekTbQW9Rm6HPspk");
+    const [displayPreview, setDisplayPreview] = useState(true);
 
     async function addPost() {
         const imageRef = ref(storage, `image/${image.name}`);
@@ -20,6 +22,30 @@ export default function PostPageAdd() {
         const imageURL = await getDownloadURL(response.ref);
         await addDoc(collection(dB, "posts"), {caption, image: imageURL});
         navigate("/");
+    }
+
+    function handleUpload(e) {
+        const uploadedFile = e.target.files[0];
+
+        if (checkAccepted(uploadedFile.name)) {
+            setDisplayPreview(true);
+            console.log("File format accepted!");
+            setImage(uploadedFile);
+            const ImagePreview = URL.createObjectURL(uploadedFile);
+            setPreviewImage(ImagePreview);
+        }
+        else {
+            setDisplayPreview(false);
+        }
+    }
+
+    function checkAccepted(fileName) {
+        const acceptedFormats = ['jpg', 'jpeg', 'png', 'webp'];
+        let isAccepted = false;
+        for (let i=0; i<acceptedFormats.length;i++) {
+            isAccepted = isAccepted || fileName.slice(-4).includes(acceptedFormats[i]);
+        }
+        return isAccepted;
     }
 
     useEffect(() => {
@@ -47,11 +73,21 @@ export default function PostPageAdd() {
             <Form.Label>Image URL</Form.Label>
             <Form.Control
                 type="file"
-                onChange={(e) => {setImage(e.target.files[0])}}
+                onChange={handleUpload}
             />
             <Form.Text className="text-muted">
-                Make sure the url has a image type at the end: jpg, jpeg, png.
+                Make sure the url has a image type at the end: jpg, jpeg, png, webp.
             </Form.Text>
+            <Row>
+                {displayPreview && <Image src={previewImage}
+                style={{
+                    objectFit: "cover",
+                    width: "18rem",
+                    height: "18rem",
+                    display: "block"
+                }}></Image>}
+                {!displayPreview && <div>Upload a valid file format.</div>}
+            </Row>
             </Form.Group>
             <Button variant="primary" onClick={async (e) => addPost()}>
             Submit

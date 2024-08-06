@@ -1,13 +1,10 @@
 import { DetailNavBar } from "../template/DefaultNavBar";
 import { useParams, useNavigate } from "react-router-dom";
-import { dB } from "../firebase";
-import { collection, query, where, getDocs, getDoc, doc, deleteDoc } from "firebase/firestore";
+import { dB, auth } from "../firebase";
+import { getDoc, doc, deleteDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { Container, Image, Row, Col, Card } from "react-bootstrap";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../firebase";
-import { signOut } from "firebase/auth";
-
 
 export default function PostDetail() {
     
@@ -88,10 +85,8 @@ export default function PostDetail() {
     return (
         <>
         <DetailNavBar />
-        <Container>
-            <Row>
+        <Container style={{padding: '2%'}}>
                 <MakePost /> 
-            </Row>
         </Container>
         </>
     );

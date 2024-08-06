@@ -4,7 +4,7 @@ import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 export function HomeNavBar() {
-    const [user, loading] = useAuthState(auth);
+    const [user] = useAuthState(auth);
 
     return (
         <Navbar variant="light" bg="light">
