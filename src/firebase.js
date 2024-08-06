@@ -21,9 +21,3 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const dB = getFirestore(app);
 export const storage = getStorage(app);
-/* 
-admin = {
-email: admin@user.com
-password: admin_pwd69420!
-}
-*/
