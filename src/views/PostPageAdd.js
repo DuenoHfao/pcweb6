@@ -20,7 +20,7 @@ export default function PostPageAdd() {
         const imageRef = ref(storage, `image/${image.name}`);
         const response = await uploadBytes(imageRef, image);
         const imageURL = await getDownloadURL(response.ref);
-        await addDoc(collection(dB, "posts"), {caption, image: imageURL});
+        await addDoc(collection(dB, "posts"), {caption, image: imageURL, likes: 0});
         navigate("/");
     }
 
